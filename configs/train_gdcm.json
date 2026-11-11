@@ -1,0 +1,30 @@
+{
+  "base_checkpoint": "outputs/dehazing/checkpoints/step-005000",
+  "base_step": 5000,
+  "base_sha256": "3a9b28b5431ce3ec893e4091439c1a0508e9b7fce40f268248e8d3b2d69a5939",
+  "output": "outputs/gdcm",
+  "steps": 2000,
+  "batch_size": 1,
+  "accumulation": 4,
+  "resolution": 512,
+  "seed": 123,
+  "learning_rate": 0.0001,
+  "weight_decay": 0.01,
+  "precision": "fp16",
+  "save_every": 100,
+  "gdcm": {
+    "channels": 32,
+    "levels": 3,
+    "blocks_per_level": 2,
+    "clamp_output": true
+  },
+  "loss": {
+    "final_weight": 1.0,
+    "compensation_weight": 0.5,
+    "gradient_weight": 0.1,
+    "fft_weight": 0.05,
+    "correction_weight": 0.01,
+    "eps": 0.001
+  },
+  "base_config": "configs/train_dehazing.json"
+}

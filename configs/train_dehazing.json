@@ -1,0 +1,58 @@
+{
+  "model": "models/stable-diffusion-2-1-base",
+  "ram_weights": "models/ram/ram_swin_large_14m.pth",
+  "ram_tokenizer": "models/bert-base-uncased",
+  "output": "outputs/dehazing",
+  "resume_checkpoint": "checkpoints/dehazing-init",
+  "resume_step": 3000,
+  "initial_checkpoint_sha256": "6bb4851e68a672c2e360a74eed408d4973c0532cc74be6c6b16484dc1643c085",
+  "resolution": 512,
+  "stage1_steps": 3000,
+  "stage2_steps": 2000,
+  "steps": 5000,
+  "save_every": 500,
+  "accumulation": 4,
+  "rank": 4,
+  "learning_rate": 5e-05,
+  "timestep": 1,
+  "alpha": 1.0,
+  "lambda_lpips": 2.0,
+  "teacher_cfg": 7.5,
+  "teacher_t_min": 20,
+  "teacher_t_max": 500,
+  "negative_prompt": "painting, oil painting, illustration, drawing, art, sketch, oil painting, cartoon, CG Style, 3D render, unreal engine, blurring, dirty, messy, worst quality, low quality, frames, watermark, signature, jpeg artifacts, deformed, lowres, over-smooth",
+  "seed": 123,
+  "precision": "fp16",
+  "align_method": "nofix",
+  "sources": [
+    {
+      "name": "dehaze1k",
+      "root": "data/dehaze-1k/train"
+    },
+    {
+      "name": "dense",
+      "hazy": "data/Dense_Haze/hazy",
+      "gt": "data/Dense_Haze/GT"
+    },
+    {
+      "name": "nh",
+      "hazy": "data/NH-HAZE/train/hazy",
+      "gt": "data/NH-HAZE/train/clear"
+    }
+  ],
+  "batch_size": 1,
+  "lambda_mse": 1.0,
+  "dcp_patch": 15,
+  "dcp_omega": 0.95,
+  "dcp_air_fraction": 0.001,
+  "dcp_guide_radius": 20,
+  "dcp_guide_eps": 0.001,
+  "lambda_asd": 1.0,
+  "auxiliary_rank": 4,
+  "auxiliary_learning_rate": 5e-05,
+  "auxiliary_gamma": -1.0,
+  "auxiliary_weighting": "one",
+  "auxiliary_updates_per_student": 1,
+  "unconditional_prompt": "",
+  "method": "asdsr_eq8_eq9_dehazing"
+}

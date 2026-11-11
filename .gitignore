@@ -1,0 +1,43 @@
+# Local environments and caches
+.venv/
+venv/
+.idea/
+.vscode/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.cache/
+*.egg-info/
+
+# Datasets, pretrained resources, checkpoints and generated files
+/data/
+/dataset/
+/datasets/
+/models/
+/weights/
+/pretrained/
+/checkpoints/
+/output/
+/outputs/
+/logs/
+/tmp/
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+*.bin
+*.onnx
+*.h5
+*.pkl
+*.npy
+*.npz
+*.zip
+*.tar
+*.gz
+*.log
+events.out.tfevents.*
+
+# Local credentials
+.env
+.env.*
+*.pem
