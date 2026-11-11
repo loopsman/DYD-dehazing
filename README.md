@@ -1,6 +1,18 @@
-# Dehaze as You Desire: Intensity-Controllable and Region-Specific Dehazing
+# Dehaze as You Desire
 
-**DYD-Dehazing** is a one-step diffusion framework with controllable dehazing intensity, Gated Detail Compensation (GDCM), and region selection through a spatial mask.
+**DYD-Dehazing** is a one-step diffusion framework for controllable image dehazing. A single model supports different restoration preferences at inference time:
+
+- adjust the dehazing intensity;
+- adjust the amount of texture enhancement;
+- select the spatial region to be processed.
+
+The same checkpoint can produce a family of outputs without retraining.
+
+![Controllable dehazing](assets/view.png)
+
+![Intensity and region control](assets/top.png)
+
+![Two-dimensional control](assets/control.png)
 
 ## Setup
 
@@ -11,7 +23,7 @@ pip install torch==2.1.1 torchvision==0.16.1 --index-url https://download.pytorc
 pip install -r requirements.txt
 ```
 
-Prepare SD2.1-base, RAM weights, the BERT tokenizer, and training data locally. Set their paths in `configs/train_dehazing.json`. Datasets and model weights are not included.
+Prepare the pretrained model resources and training data, and set their paths in `configs/train_dehazing.json`. Datasets and model weights are not included.
 
 ## Training
 
@@ -25,13 +37,13 @@ python scripts/train_dehazing.py --config configs/train_dehazing.json
 
 The supplied configuration continues from step 3,000 to step 5,000. Set `resume_checkpoint` to the matching initialization checkpoint; the initial 3,000-step training procedure is not included.
 
-**2. Train GDCM** — `scripts/train_gdcm.py`
+**2. Train the detail branch** — `scripts/train_gdcm.py`
 
 ```bash
 python scripts/train_gdcm.py --config configs/train_gdcm.json
 ```
 
-Set `base_checkpoint`, `base_step`, and `base_sha256` in the GDCM configuration to your trained checkpoint. The dehazing model is frozen while GDCM learns to compensate for details attenuated by VAE compression.
+Set `base_checkpoint`, `base_step`, and `base_sha256` in the configuration to your trained dehazing checkpoint.
 
 ## Inference
 
@@ -45,10 +57,10 @@ python scripts/infer_dehazing.py \
   --alpha 1.0 --beta 1.0
 ```
 
-`--alpha` controls dehazing strength; `--beta` controls detail compensation. For a single image, add `--mask path/to/mask.png` to select the processing region (white: apply corrections; black: suppress corrections). Outputs retain the input dimensions. Masked regions pass through the VAE, so unselected pixels are not guaranteed to be identical to the input.
+`--alpha` controls dehazing intensity and `--beta` controls texture enhancement. For a single image, add `--mask path/to/mask.png` to select the processing region. Outputs retain the input dimensions.
 
-The checkpoint folder must contain `config.json`, `adapters.safetensors`, and `gdcm.safetensors`. Use `--model`, `--ram-weights`, and `--ram-tokenizer` to override resource paths stored in the checkpoint.
+## Related work
 
-## Acknowledgements
+The training guidance follows adversarial score distillation (ASD), as developed for stable one-step diffusion restoration:
 
-This project builds on [PiSA-SR](https://github.com/csslc/PiSA-SR) and [Recognize Anything](https://github.com/xinyu1205/recognize-anything).
+> Wei Zhu, Kai Zhang, Yu Zheng, Lei Luo, and Jian Yang. *Adversarial Score Distillation for Stable One-Step Diffusion in Real-World Image Super-Resolution*. ECCV 2026. [Paper](https://doi.org/10.1007/978-3-032-37196-6_20)
